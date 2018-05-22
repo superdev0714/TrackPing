@@ -1,0 +1,21 @@
+<div>
+  <gmap-map
+    :center="center"
+    :zoom="11"
+    style="height: calc(100vh - 60px);"
+  >
+    <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
+      <b-link :href="infoLink" target="_blank">{{infoContent}}</b-link>
+    </gmap-info-window>
+    <gmap-marker
+      :key="index"
+      v-for="(m, index) in markers"
+      :position="m.position"
+      :label="m.label"
+      :title="m.title"
+      :clickable="true"
+      :draggable="m.draggable"
+      @click="toggleInfoWindow(m, index)"
+    ></gmap-marker>
+  </gmap-map>
+</div>

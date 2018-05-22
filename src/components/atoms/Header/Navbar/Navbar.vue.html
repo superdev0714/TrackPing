@@ -1,0 +1,18 @@
+<header class="app-header navbar navbar-view">
+  <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <b-link class="navbar-brand" to="/#"></b-link>
+
+  <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" @click="sidebarToggle">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <b-navbar-nav class="nav-menu-view d-md-down-none">
+    <b-nav-item class="px-sm-2 px-lg-3 px-xl-4" to="/dashboard"><i class="fa fa-dashboard fa-md"></i> Dashboard</b-nav-item>
+  </b-navbar-nav>
+
+  <b-navbar-nav class="ml-auto right-menu">
+    <HeaderDropdownAccnt class="pr-xl-4"/>
+  </b-navbar-nav>
+</header>

@@ -1,0 +1,29 @@
+<div class="sidebar">
+  <SidebarHeader/>
+  <nav class="sidebar-nav">
+    <ul class="nav">
+      <template v-for="(item, index) in navItems">
+        <template v-if="item.divider">
+          <SidebarNavDivider :classes="item.class" v-bind:key="index"/>
+        </template>
+        <template v-else>
+          <template v-if="item.children">
+            <SidebarNavDropdown :name="item.name" :url="item.url" :icon="item.icon" v-bind:key="index">
+              <template v-for="(childLink, index) in item.children">
+                <SidebarNavItem :classes="item.class" v-bind:key="index">
+                  <SidebarNavLink :name="childLink.name" :url="childLink.url" :icon="childLink.icon" :badge="childLink.badge" :variant="item.variant" classes="pl-4"/>
+                </SidebarNavItem>
+              </template>
+            </SidebarNavDropdown>
+          </template>
+          <template v-else>
+            <SidebarNavItem :classes="item.class" v-bind:key="index">
+              <SidebarNavLink :name="item.name" :url="item.url" :icon="item.icon" :badge="item.badge" :variant="item.variant"/>
+            </SidebarNavItem>
+          </template>
+        </template>
+      </template>
+    </ul>
+    <slot></slot>
+  </nav>
+</div>
