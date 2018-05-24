@@ -29,7 +29,11 @@ export default new Router({
       },
       children: [
         {
-          path: '',
+          path: ''
+          // component: MonitorPage
+        },
+        {
+          path: ':id',
           component: MonitorPage
         }
       ]

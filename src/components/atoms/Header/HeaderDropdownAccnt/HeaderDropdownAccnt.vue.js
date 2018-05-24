@@ -16,7 +16,7 @@ export default {
   },
 
   mounted () {
-    this.username = this.userInfo.email
+    this.username = firebase.auth().currentUser.email
   },
 
   methods: {

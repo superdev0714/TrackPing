@@ -11,7 +11,7 @@ import firebase from 'firebase'
 import router from './router'
 import { interceptRouter } from './router/middleware'
 import mixin from './mixins'
-import store from './store'
+// import store from './store'
 
 import App from './App'
 
@@ -44,7 +44,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     app = new Vue({
       el: '#app',
       router,
-      store,
+      // store,
       template: '<App/>',
       components: {
         App

@@ -1,13 +1,9 @@
 import Vue from 'vue'
-import { mapGetters, mapActions } from 'vuex'
 
 const eventHub = new Vue()
 
 export default {
   computed: {
-    ...mapGetters([
-      'userInfo'
-    ]),
     eventHub () {
       return eventHub
     },
@@ -16,11 +12,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'clearAuthData'
-    ]),
     logout () {
-      this.clearAuthData()
       this.$cookie.delete('token')
       this.$router.replace('/login')
     },

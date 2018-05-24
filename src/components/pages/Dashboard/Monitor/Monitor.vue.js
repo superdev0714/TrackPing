@@ -1,4 +1,5 @@
 import * as VueGoogleMaps from 'vue2-google-maps'
+import firebase from 'firebase'
 import Vue from 'vue'
 
 Vue.use(VueGoogleMaps, {
@@ -57,8 +58,21 @@ export default {
       }
     }
   },
+
+  mounted () {
+    const database = firebase.database()
+    var currentUser = firebase.auth().currentUser
+    database.ref('users').child(currentUser.uid).on('value', snapshot => {
+      console.log(snapshot.val())
+      let data = snapshot.val()
+      Object.keys(data).forEach(function (name) {
+        console.log(name)
+      })
+    })
+  },
+
   methods: {
-    toggleInfoWindow: function (marker, idx) {
+    toggleInfoWindow (marker, idx) {
       this.infoWindowPos = marker.position
       this.infoContent = marker.title
       this.infoLink = marker.www

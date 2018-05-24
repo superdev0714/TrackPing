@@ -1,19 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+// import Vue from 'vue'
+// import Vuex from 'vuex'
+// import createPersistedState from 'vuex-persistedstate'
 
-import authentication from './modules/authentication'
+// import authentication from './modules/authentication'
 
-Vue.use(Vuex)
+// Vue.use(Vuex)
 
-const store = new Vuex.Store({
-  modules: {
-    authentication
-  },
-  plugins: [createPersistedState({
-    paths: ['authentication']
-  })],
-  strict: false
-})
+// const store = new Vuex.Store({
+//   modules: {
+//     authentication
+//   },
+//   plugins: [createPersistedState({
+//     paths: ['authentication']
+//   })],
+//   strict: false
+// })
 
-export default store
+// export default store
