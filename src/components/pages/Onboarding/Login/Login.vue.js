@@ -1,3 +1,4 @@
+import firebase from 'firebase'
 import { mapActions } from 'vuex'
 
 export default {
@@ -25,28 +26,15 @@ export default {
     login () {
       this.errorMessage = ''
 
-      this.$router.replace('/dashboard')
-      // this.$http.post('login', {
-      //   email: this.email,
-      //   password: this.password
-      // }).then(res => {
-      //   if (res.data.token) {
-      //     const SPAToken = res.data.token
-      //     const expirationDate = new Date()
-      //     expirationDate.setMinutes(expirationDate.getMinutes() + res.data.session_length / 60)
-      //     this.$cookie.set('token', SPAToken, {expires: expirationDate})
-      //     if (res.data.userInfo) {
-      //       this.updateUserInfo(res.data.userInfo)
-      //     }
-      //     this.$router.replace('/dashboard')
-      //   }
-      //   if (res.data.err) {
-      //     this.errorMessage = res.data.err
-      //   }
-      // }).catch(err => {
-      //   console.error('auth err:', err)
-      //   this.errorMessage = 'Login Failed. Please try again.'
-      // })
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          console.log(user)
+          this.$router.replace('/dashboard')
+        },
+        (err) => {
+          alert('Oops. ' + err.message)
+        }
+      )
     }
   }
 }

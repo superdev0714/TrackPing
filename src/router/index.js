@@ -24,6 +24,9 @@ export default new Router({
       path: '/dashboard',
       name: 'Dashboard',
       component: DashboardLayout,
+      meta: {
+        requiresAuth: true
+      },
       children: [
         {
           path: '',

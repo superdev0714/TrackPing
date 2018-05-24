@@ -1,15 +1,13 @@
-import VueCookie from 'vue-cookie'
+import firebase from 'firebase'
 
 export const interceptRouter = function (router) {
   // Authentication logic
   router.beforeEach((to, from, next) => {
-    const requiresAuth = to.matched.some(route => route.meta.requiresAuth)
-    const SPAToken = VueCookie.get('token')
-    if (!requiresAuth) {
-      next()
-    } else if (requiresAuth && (!SPAToken)) {
-      next({ path: '/login' })
-    }
+    let currentUser = firebase.auth().currentUser
+    let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+    if (requiresAuth && !currentUser) next('login')
+    else if (!requiresAuth && currentUser) next()
     next()
   })
   router.afterEach(() => {

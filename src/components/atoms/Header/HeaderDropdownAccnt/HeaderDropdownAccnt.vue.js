@@ -1,4 +1,5 @@
 import Avatar from 'vue-avatar'
+import firebase from 'firebase'
 
 export default {
   name: 'header-dropdown-accnt',
@@ -21,7 +22,10 @@ export default {
   methods: {
     onLogout () {
       this.$cookie.delete('token')
-      this.$router.replace('/login')
+
+      firebase.auth().signOut().then(() => {
+        this.$router.replace('/login')
+      })
     }
   }
 }
