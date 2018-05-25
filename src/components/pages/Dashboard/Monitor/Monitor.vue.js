@@ -1,3 +1,4 @@
+import { loaded } from 'vue2-google-maps'
 import firebase from 'firebase'
 
 export default {
@@ -6,7 +7,7 @@ export default {
   data () {
     return {
       deviceId: '',
-      center: {lat: 37.431489, lng: -122.163719},
+      center: { lat: 51.7519, lng: -1.2578 },
       markers: [],
       infoContent: '',
       infoLink: '',
@@ -27,7 +28,10 @@ export default {
   },
 
   mounted () {
-    this.getLocations()
+    loaded.then(() => {
+      this.directionsService = new window.google.maps.DirectionsService()
+      this.getLocations()
+    })
   },
 
   watch: {
@@ -38,6 +42,21 @@ export default {
   },
 
   methods: {
+    showRoute (origin, destination) {
+      if (!origin || !destination) return
+      this.directionsService.route({
+        origin,
+        destination,
+        travelMode: window.google.maps.TravelMode.WALKING
+      }, (response, status) => {
+        if (status === 'OK') {
+          const directionsDisplay = new window.google.maps.DirectionsRenderer({
+            map: this.$refs.gMap.$mapObject
+          })
+          directionsDisplay.setDirections(response)
+        }
+      })
+    },
     toggleInfoWindow (marker, idx) {
       this.infoWindowPos = marker.position
       this.infoContent = marker.title
@@ -56,9 +75,13 @@ export default {
         this.deviceId = this.$route.params.id
       }
 
+      // let origin = null
+      // let destination = null
+
       const database = firebase.database()
       var currentUser = firebase.auth().currentUser
 
+      // database.ref('users').child('Kwe12S9LeNXx4lfM6ZTKefROd9G3').child('2166b33e9c4a0bb5').on('value', snapshot => {
       database.ref('users').child(currentUser.uid).child(this.deviceId).on('value', snapshot => {
         let data = snapshot.val()
         this.markers = []
@@ -76,9 +99,13 @@ export default {
               title: deviceInfo.time
               // www: 'https://www.facebook.com/'
             })
+            // origin = destination
+            // destination = { lat: deviceInfo.latitude, lng: deviceInfo.longitude }
+            // this.showRoute(origin, destination)
+            // console.log(origin, destination)
           })
           this.$refs.gMap.$mapObject.setCenter(this.center)
-          this.$refs.gMap.$mapObject.setZoom(15)
+          this.$refs.gMap.$mapObject.setZoom(12)
         }
       })
     }
