@@ -15,32 +15,9 @@ export default {
   name: 'google-maps',
   data () {
     return {
+      deviceId: '',
       center: {lat: 37.431489, lng: -122.163719},
-      markers: [{
-        position: {lat: 37.431489, lng: -122.163719},
-        label: 'S',
-        draggable: false,
-        title: 'Stanford',
-        www: 'https://www.stanford.edu/'
-      }, {
-        position: {lat: 37.394694, lng: -122.150333},
-        label: 'T',
-        draggable: false,
-        title: 'Tesla',
-        www: 'https://www.tesla.com/'
-      }, {
-        position: {lat: 37.331681, lng: -122.030100},
-        label: 'A',
-        draggable: false,
-        title: 'Apple',
-        www: 'https://www.apple.com/'
-      }, {
-        position: {lat: 37.484722, lng: -122.148333},
-        label: 'F',
-        draggable: false,
-        title: 'Facebook',
-        www: 'https://www.facebook.com/'
-      }],
+      markers: [],
       infoContent: '',
       infoLink: '',
       infoWindowPos: {
@@ -60,15 +37,14 @@ export default {
   },
 
   mounted () {
-    const database = firebase.database()
-    var currentUser = firebase.auth().currentUser
-    database.ref('users').child(currentUser.uid).on('value', snapshot => {
-      console.log(snapshot.val())
-      let data = snapshot.val()
-      Object.keys(data).forEach(function (name) {
-        console.log(name)
-      })
-    })
+    this.getLocations()
+  },
+
+  watch: {
+    '$route' () {
+      // this.markers = []
+      this.getLocations()
+    }
   },
 
   methods: {
@@ -84,6 +60,37 @@ export default {
         this.currentMidx = idx
         this.infoWinOpen = true
       }
+    },
+    getLocations () {
+      if (this.$route.params != null) {
+        this.deviceId = this.$route.params.id
+      }
+
+      const database = firebase.database()
+      var currentUser = firebase.auth().currentUser
+
+      database.ref('users').child(currentUser.uid).child(this.deviceId).on('value', snapshot => {
+        console.log('-------', snapshot.val())
+        let data = snapshot.val()
+        this.markers = []
+        if (data.locations) {
+          Object.keys(data.locations).forEach((name) => {
+            console.log('======', data.locations[name])
+            const deviceInfo = data.locations[name]
+            this.center = {
+              lat: deviceInfo.latitude,
+              lng: deviceInfo.longitude
+            }
+            this.markers.push({
+              position: {lat: deviceInfo.latitude, lng: deviceInfo.longitude},
+              label: '',
+              draggable: false,
+              title: deviceInfo.time
+              // www: 'https://www.facebook.com/'
+            })
+          })
+        }
+      })
     }
   }
 }

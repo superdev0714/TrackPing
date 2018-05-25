@@ -30,14 +30,13 @@ export default {
 
   methods: {
     getDevices () {
-      this.navItems = _.cloneDeep(NavItemsList)
-
       const database = firebase.database()
       var currentUser = firebase.auth().currentUser
       database.ref('users').child(currentUser.uid).on('value', snapshot => {
         console.log(snapshot.val())
         let data = snapshot.val()
 
+        this.navItems = _.cloneDeep(NavItemsList)
         Object.keys(data).forEach((name) => {
           if (name !== 'email') {
             this.navItems.push({
