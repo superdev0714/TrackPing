@@ -1,18 +1,8 @@
-import * as VueGoogleMaps from 'vue2-google-maps'
 import firebase from 'firebase'
-import Vue from 'vue'
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyASyYRBZmULmrmw_P9kgr7_266OhFNinPA'
-    // To use the Google Maps JavaScript API, you must register your app project on the Google API Console and get a Google API key which you can add to your app
-    // v: 'OPTIONAL VERSION NUMBER',
-    // libraries: 'places', //// If you need to use place input
-  }
-})
 
 export default {
   name: 'google-maps',
+
   data () {
     return {
       deviceId: '',
@@ -70,12 +60,10 @@ export default {
       var currentUser = firebase.auth().currentUser
 
       database.ref('users').child(currentUser.uid).child(this.deviceId).on('value', snapshot => {
-        console.log('-------', snapshot.val())
         let data = snapshot.val()
         this.markers = []
         if (data.locations) {
           Object.keys(data.locations).forEach((name) => {
-            console.log('======', data.locations[name])
             const deviceInfo = data.locations[name]
             this.center = {
               lat: deviceInfo.latitude,
@@ -89,6 +77,8 @@ export default {
               // www: 'https://www.facebook.com/'
             })
           })
+          this.$refs.gMap.$mapObject.setCenter(this.center)
+          this.$refs.gMap.$mapObject.setZoom(15)
         }
       })
     }

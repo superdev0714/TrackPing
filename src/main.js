@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import VeeValidate from 'vee-validate'
 import VueCookie from 'vue-cookie'
+import * as VueGoogleMaps from 'vue2-google-maps'
 import firebase from 'firebase'
 
 import router from './router'
@@ -19,6 +20,13 @@ Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(VueCookie)
 Vue.use(VeeValidate, { fieldsBagName: 'veeFields' })
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyASyYRBZmULmrmw_P9kgr7_266OhFNinPA',
+    libraries: 'places'
+  }
+})
+
 Vue.mixin(mixin)
 
 interceptRouter(router)
